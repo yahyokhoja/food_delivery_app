@@ -1,48 +1,22 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import helmet from 'helmet';
 import path from 'path';
-import routes from './routes';
+import routes from './routes/index';
 import sequelize from './config/database';
 
 const app = express();
-const port = 3000;
-
-// Используем helmet для настройки заголовков безопасности
-app.use(helmet());
-
-// Настраиваем политику безопасности контента (CSP)
-app.use(
-    helmet.contentSecurityPolicy({
-        directives: {
-            defaultSrc: ["'self'"],
-            styleSrc: ["'self'", 'https://www.gstatic.com', 'https://stackpath.bootstrapcdn.com'],
-            scriptSrc: ["'self'", 'https://www.gstatic.com', 'https://code.jquery.com', 'https://cdn.jsdelivr.net'],
-            imgSrc: ["'self'", 'data:'],
-            connectSrc: ["'self'", 'https://translate-pa.googleapis.com'],
-        },
-    })
-);
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
-app.use('/api', routes);
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// Обслуживаем статические файлы из папки public
+// Обслуживание статических файлов из папки public
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Добавляем маршрут для корневого URL
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
-});
+app.use('/', routes);
 
-// Добавляем маршрут для админки
-app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/admin.html'));
-});
-
-// Инициализируем базу данных и запускаем сервер
 sequelize.sync().then(() => {
     app.listen(port, () => {
-        console.log(`Сервер запущен на http://localhost:${port}`);
+        console.log(`Server is running on http://localhost:${port}`);
     });
 });

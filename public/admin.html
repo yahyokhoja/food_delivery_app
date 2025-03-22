@@ -3,42 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админка</title>
-    <!-- Подключаем Bootstrap CSS -->
+    <title>Администрирование - Доставка еды</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        header {
-            background-color: #f8f9fa;
-            padding: 10px 0;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        header h1 {
-            margin: 0;
-        }
-    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' https://www.gstatic.com https://code.jquery.com https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com 'unsafe-inline';
+        style-src 'self' https://www.gstatic.com https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com 'unsafe-inline';
+        font-src 'self' https://cdnjs.cloudflare.com;
+        img-src 'self' data:;
+        object-src 'none';
+    ">
 </head>
 <body>
-    <header>
-        <h1>Админка</h1>
-    </header>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-utensils mr-2"></i>Доставка еды
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home mr-1"></i>Главная
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/menu">
+                            <i class="fas fa-book-open mr-1"></i>Меню
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/admin.html">
+                            <i class="fas fa-cog mr-1"></i>Управление
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/orders">
+                            <i class="fas fa-clipboard-list mr-1"></i>Заказы
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/settings">
+                            <i class="fas fa-user-cog mr-1"></i>Настройки
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
-        <form id="menu-form">
+        <h2 class="mb-4 text-center">Администрирование</h2>
+        <form id="add-food-form" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="название">Название:</label>
-                <input type="text" id="название" name="название" class="form-control" required>
+                <label for="food-name">Название</label>
+                <input type="text" class="form-control" id="food-name" required>
             </div>
             <div class="form-group">
-                <label for="цена">Цена:</label>
-                <input type="number" id="цена" name="цена" class="form-control" required>
+                <label for="food-price">Цена</label>
+                <input type="number" class="form-control" id="food-price" required>
             </div>
-            <button type="submit" class="btn btn-primary">Добавить</button>
+            <div class="form-group">
+                <label for="food-description">Описание</label>
+                <textarea class="form-control" id="food-description" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="food-image">Фото</label>
+                <input type="file" class="form-control-file" id="food-image" accept="image/*" capture="camera" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить еду</button>
         </form>
     </div>
 
@@ -46,28 +84,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script>
-        document.getElementById('menu-form').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const название = document.getElementById('название').value;
-            const цена = document.getElementById('цена').value;
-
-            const response = await fetch('/api/меню', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ название, цена })
-            });
-
-            if (response.ok) {
-                alert('Элемент меню добавлен успешно');
-                document.getElementById('menu-form').reset();
-            } else {
-                alert('Ошибка при добавлении элемента меню');
-            }
-        });
-    </script>
+    <script src="scripts-admin.js"></script>
 </body>
 </html>
+

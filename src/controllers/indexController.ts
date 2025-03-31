@@ -44,7 +44,7 @@ Menu.init(
 );
 
 class IndexController {
-    // Get the menu
+    // Получить меню
     async getMenu(req: Request, res: Response) {
         try {
             const menu = await Menu.findAll();  // Correctly using Menu model
@@ -54,13 +54,13 @@ class IndexController {
         }
     }
 
-    // Place an order
+    // Разместить заказ
     async placeOrder(req: Request, res: Response) {
         const order = req.body;
         res.status(201).json({ message: 'Order placed successfully', order });
     }
 
-    // Add a menu item
+    // Добавить элемент меню
     async addMenuItem(req: Request, res: Response) {
         const { name, price, description } = req.body;
         const photo = req.file;
@@ -82,7 +82,7 @@ class IndexController {
         }
     }
 
-    // Update a menu item
+    // Обновить элемент меню
     async updateMenuItem(req: Request, res: Response) {
         const { id } = req.params;
         const { name, price, description } = req.body;
@@ -111,13 +111,13 @@ class IndexController {
         }
     }
 
-    // Delete a menu item
+    // Удалить элемент меню
     async deleteMenuItem(req: Request, res: Response) {
         const { id } = req.params;
         try {
             const item = await Menu.findByPk(id);  // Correctly using Menu model
             if (item) {
-                // Delete the file if it exists
+                // Удаление файла, если он есть
                 if (item.photo) {
                     const filePath = path.join(__dirname, '../../uploads', item.photo);
                     try {

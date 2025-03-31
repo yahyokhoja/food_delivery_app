@@ -1,11 +1,10 @@
 import { Router } from 'express';
 import path from 'path';
-import multer from 'multer';
+import upload from '../controllers/middleware/upload'; // Импортируем middleware для загрузки файлов
 import IndexController from '../controllers/indexController';
 import UserController from '../controllers/userController';
 
 const router = Router();
-const upload = multer({ dest: 'uploads/' });
 const indexController = new IndexController();
 const userController = new UserController();
 
